@@ -24,7 +24,6 @@ def ccipher(shift, cipher_txt):
 
 run = True
 while run:
-    # char_shift = int(input("Input letter shift: "))
     try:
         char_shift = int(input("Input letter shift: "))
         if char_shift < 1 or char_shift > 26:
