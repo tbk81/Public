@@ -1,0 +1,38 @@
+# Script for decoding a ceaser cipher
+
+def ccipher(shift, cipher_txt):
+
+    # Creates list of the alphabet for decoding
+    alphabet_li = list(map(chr, range(97, 123)))
+
+    # Creates list of cipher words and splits each word into individual characters
+    split_cipher = cipher_txt.split()
+    indiv_cipher = [[*split_cipher[word].lower()] for word in range(len(split_cipher))]
+
+    # Iterates through the list of split char words, decrypts, and returns results
+    decrypt_word_li = []
+    for word in range(len(indiv_cipher)):
+        decrypt_char_li = []
+        for char in range(len(indiv_cipher[word])):
+            index_num = alphabet_li.index(indiv_cipher[word][char])
+            num = (index_num - shift)%26
+            decrypt_char_li.append(alphabet_li[num])
+        decrypt_word = ''.join(decrypt_char_li)
+        decrypt_word_li.append(decrypt_word)
+    decrypt_message = ' '.join(decrypt_word_li)
+    return decrypt_message
+
+run = True
+while run:
+    # char_shift = int(input("Input letter shift: "))
+    try:
+        char_shift = int(input("Input letter shift: "))
+        if char_shift < 1 or char_shift > 26:
+            print("Input number between 1-26")
+        else:
+            txt_to_decrypt = input("Text to decrypt (alphanumeric chars only): ")
+            print('\n',ccipher(char_shift, txt_to_decrypt),'\n')
+            print("...script exiting...")
+            run = False
+    except ValueError:
+       print("Input a number")
