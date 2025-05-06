@@ -1,0 +1,79 @@
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+var alphabet = []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
+
+func findAllIndices(word string) []int {
+	xs := strings.Split(word, "")
+	var xi []int
+	for _, v := range xs {
+		for x := range alphabet {
+			if v == alphabet[x] {
+				xi = append(xi, x)
+			}
+		}
+	}
+	return xi
+}
+
+func Encrypt(word string, shift int) string {
+	var e string
+	sli := findAllIndices(word)
+	shift = shift % len(alphabet)
+	shiftSlice := append(alphabet[shift:len(alphabet):len(alphabet)], alphabet[:shift]...)
+	for _, v := range sli {
+		e += shiftSlice[v]
+	}
+	return e
+}
+
+func Decrypt(word string, shift int) string {
+	var e string
+	num := 26 - shift
+	sli := findAllIndices(word)
+	shift = num % len(alphabet)
+	shiftSlice := append(alphabet[shift:len(alphabet):len(alphabet)], alphabet[:shift]...)
+	for _, v := range sli {
+		e += shiftSlice[v]
+	}
+	return e
+}
+
+func main() {
+	var encryptWord, usrChoice string
+	var shiftNumber int
+
+	// fmt.Println("Type 'endcode' to encrypt, type 'decode' to decrypt:")
+	// fmt.Scanln(&usrChoice)
+
+Loop:
+	for {
+		fmt.Println("Type 'endcode' to encrypt, type 'decode' to decrypt, or 'done' to exit:")
+		fmt.Scanln(&usrChoice)
+		switch {
+		case usrChoice == "encode":
+			fmt.Print("Type your message: ")
+			fmt.Scanln(&encryptWord)
+			fmt.Print("Type the shift number: ")
+			fmt.Scanln(&shiftNumber)
+			fmt.Println("Here's your encoded result:", Encrypt(encryptWord, shiftNumber))
+			goto Loop
+		case usrChoice == "decode":
+			fmt.Print("Type your message: ")
+			fmt.Scanln(&encryptWord)
+			fmt.Print("Type the shift number: ")
+			fmt.Scanln(&shiftNumber)
+			fmt.Println("Here's your encoded result:", Decrypt(encryptWord, shiftNumber))
+		case usrChoice == "done":
+			fmt.Println("Exiting...")
+			break Loop
+		case usrChoice != "encode" && usrChoice != "decode":
+			fmt.Printf("%v is not an option, try again\n", usrChoice)
+			goto Loop
+		}
+	}
+}
